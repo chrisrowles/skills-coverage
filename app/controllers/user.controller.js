@@ -28,9 +28,12 @@ exports.create = (req, res) => {
 
 exports.all = (req, res) => {
     const name = req.query.name
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null
+    let condition = name ? { name: { [Op.like]: `%${name}%` } } : null
     
-    User.findAll({ where: condition })
+    User.findAll({
+        where: condition,
+        include: [{ model: db.skills }]
+    })
     .then(data => {
         res.send(data)
     })
@@ -45,7 +48,9 @@ exports.all = (req, res) => {
 exports.single = (req, res) => {
     const id = req.params.id
     
-    User.findByPk(id)
+    User.findByPk(id, {
+        include: [{ model: db.skills }]
+    })
     .then(data => {
         res.send(data)
     })

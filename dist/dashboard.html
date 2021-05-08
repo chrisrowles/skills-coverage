@@ -261,6 +261,9 @@
                                     <template x-for="user in users">
                                         <tr>
                                             <td class="px-2 py-2" x-text="user.name"></td>
+                                            <template x-for="skill in user.skills">
+                                                <td class="px-2 py-2" x-text="skill.user_skill.level"></td>
+                                            </template>
                                         </tr>
                                     </template>
                                 </tbody>
@@ -282,7 +285,9 @@
                     this.fetchSkills()
                 },
                 fetchUsers() {
-                    _api.fetchUsers().then(data => this.users = data)
+                    _api.fetchUsers().then(data => {
+                        this.users = data
+                    })
                 },
                 fetchUserById: id => {
                     _api.fetchUser(id).then(user => console.log(user))
@@ -299,9 +304,9 @@
                 test() {
                     _api.fetchUser(1).then(user => {
                         if (user) {
-                            _api.fetchSkill(3).then(skill => {
+                            _api.fetchSkill(4).then(skill => {
                                 if (skill) {
-                                    _api.setUserSkillLevel(user, skill, 5).then(result => console.log(result))
+                                    _api.setUserSkillLevel(user, skill, 3).then(result => console.log(result))
                                 }
                             })
                         }

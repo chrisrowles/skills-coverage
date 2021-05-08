@@ -24,7 +24,7 @@ exports.create = (req, res) => {
 
 exports.all = (req, res) => {
     const name = req.query.name
-    var condition = name ? { name: { [Op.like]: `%${name}%` } } : null
+    let condition = name ? { name: { [Op.like]: `%${name}%` } } : null
     
     Skill.findAll({ where: condition })
     .then(data => {
