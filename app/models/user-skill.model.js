@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize, db) => {
+module.exports = (sequelize, Sequelize) => {
     const UserSkill = sequelize.define("user_skill", {
         userId: {
             type: Sequelize.INTEGER,
@@ -16,8 +16,8 @@ module.exports = (sequelize, Sequelize, db) => {
         underscored: true
     })
 
-    db.users.belongsToMany(db.skills, { through: UserSkill })
-    db.skills.belongsToMany(db.users, { through: UserSkill })
+    sequelize.models.user.belongsToMany(sequelize.models.skill, { through: UserSkill })
+    sequelize.models.skill.belongsToMany(sequelize.models.user, { through: UserSkill })
     
     return UserSkill
 }
