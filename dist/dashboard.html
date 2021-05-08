@@ -90,7 +90,7 @@
         </div>
     </nav>
     
-    <div class="container w-full mx-auto pt-20" x-data="manage()">
+    <div class="container w-full mx-auto pt-20" x-data="manage()" x-init="fetchDashboard()">
         <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                 <h2 class="text-2xl">Team Skill Coverage</h2>
@@ -249,27 +249,20 @@
                         <div class="p-5">
                             <table class="table-auto border-collapse w-full">
                                 <thead>
-                                    <tr class="rounded-lg text-sm font-medium text-gray-700 bg-gray-100 text-left">
+                                    <tr class="rounded-lg text-sm text-gray-700 bg-gray-100 text-left uppercase">
                                         <th class="px-2 py-4">Name/Skill</th>
-                                        <th class="px-2 py-4">ASP.NET Core</th>
-                                        <th class="px-2 py-4">Javascript</th>
-                                        <th class="px-2 py-4">Angular</th>
-                                        <th class="px-2 py-4">AWS</th>
-                                        <th class="px-2 py-4">GCP</th>
-                                        <th class="px-2 py-4">Azure</th>
+                                        <template x-for="skill in skills">
+                                            <th class="px-2 py-4" x-text="skill.name"></th>
+                                        </template>
                                     </tr>
                                 </thead>
                                 
                                 <tbody class="text-sm font-normal text-gray-700">
-                                    <tr class="hover:bg-gray-100 border-b border-gray-200">
-                                        <td class="px-2 py-2">Alan Ward</td>
-                                        <td class="px-2 py-2 bg-green-100">5</td>
-                                        <td class="px-2 py-2 bg-green-100">4</td>
-                                        <td class="px-2 py-2 bg-red-100">2</td>
-                                        <td class="px-2 py-2 bg-yellow-100">3</td>
-                                        <td class="px-2 py-2 bg-yellow-100">3</td>
-                                        <td class="px-2 py-2 bg-green-100">5</td>
-                                    </tr>
+                                    <template x-for="user in users">
+                                        <tr>
+                                            <td class="px-2 py-2" x-text="user.name"></td>
+                                        </tr>
+                                    </template>
                                 </tbody>
                             </table>
                         </div>
@@ -281,21 +274,21 @@
     <script src="./skills-matrix.js"></script>
     <script>
         function manage() {
-            let users, skills;
-
+            let users = [], skills = []
             return {
+                users, skills,
+                fetchDashboard() {
+                    this.fetchUsers()
+                    this.fetchSkills()
+                },
                 fetchUsers() {
-                    _api.fetchUsers().then(users => {
-                        this.users = users
-                    })
+                    _api.fetchUsers().then(data => this.users = data)
                 },
                 fetchUserById: id => {
                     _api.fetchUser(id).then(user => console.log(user))
                 },
                 fetchSkills() {
-                    _api.fetchSkills().then(skills => {
-                        this.skills = skills
-                    })
+                    _api.fetchSkills().then(data => this.skills = data)
                 },
                 fetchSkillById: id => {
                     _api.fetchSkill(id).then(skill => console.log(skill))
