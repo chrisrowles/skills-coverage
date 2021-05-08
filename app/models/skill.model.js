@@ -7,10 +7,12 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.FLOAT
         },
         minimumLevel: {
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            field: 'minimum_level'
         },
         requiredAtMinimumLevel: {
-            type: Sequelize.INTEGER
+            type: Sequelize.INTEGER,
+            field: 'required_at_minimum_level'
         },
     })
     

@@ -24,5 +24,6 @@ db.sequelize = sequelize
 // Define database models
 db.users = require("./user.model")(sequelize, Sequelize)
 db.skills = require("./skill.model")(sequelize, Sequelize)
+db.userSkills = require("./user-skill.model")(sequelize, Sequelize, db)
 
 module.exports = db
