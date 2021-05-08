@@ -193,7 +193,7 @@
             </div>
             <div class="field-group mb-4 md:w-full">
                 <label class="field-label" for="skill">Skill</label>
-                <select class="field" name="skill" x-model="selectedSkill">
+                <select class="field" name="skill" x-model="selectedSkill" @change="getSkillLevelForSelectedUserAndSkill()">
                     <option value="">Select an option</option>
                     <template x-for="skill in skills">
                         <option
@@ -216,7 +216,6 @@
                 <label class="field-label" for="level">Level</label>
                 <input class="field" type="number" name="level" id="level" min="0" max="5" required x-model="skillLevel">
             </div>
-            <button class="btn bg-blue-500" type="submit" @click="getSkillLevelForSelectedUser()">Submit score</button>
             
             <div class="flex flex-row flex-wrap flex-grow mt-2">
                 <div class="w-full md:w-1/2 p-3">
@@ -307,7 +306,11 @@
                                         <tr>
                                             <td class="px-2 py-2" x-text="user.name"></td>
                                             <template x-for="skill in user.skills">
-                                                <td class="px-2 py-2" x-text="skill.user_skill.level"></td>
+                                                <td class="px-2 py-2" :class="{
+                                                    'bg-green-100': skill.user_skill.level > 3,
+                                                    'bg-yellow-100': skill.user_skill.level > 2 && skill.user_skill.level <= 3,
+                                                    'bg-red-100': skill.user_skill.level <= 2,
+                                                }" x-text="skill.user_skill.level"></td>
                                             </template>
                                         </tr>
                                     </template>
@@ -323,10 +326,9 @@
     <script src="./skills-matrix.js"></script>
     <script>
         function manage() {
-            let users = [], skills = []
             return {
-                users,
-                skills,
+                users: [],
+                skills: [],
                 selectedUser: '',
                 selectedSkill: '',
                 skillLevel: '',
@@ -348,14 +350,13 @@
                 fetchSkillById(id) {
                     _api.fetchSkill(id).then(skill => console.log(skill))
                 },
-                getSkillLevelForSelectedUser() {
-                    _api.fetchUser(this.selectedUser).then(user => {
-                        let hasSkill = user.skills.find(s => s.id === parseInt(this.selectedSkill))
-
-                        if (hasSkill) {
-                            this.skillLevel = hasSkill.user_skill.level
-                        }
+                getSkillLevelForSelectedUserAndSkill() {
+                    _api.fetchUser(this.selectedUser)
+                    .then(user => {
+                        let skill = user.skills.find(s => s.id === parseInt(this.selectedSkill))
+                        if (skill) this.skillLevel = skill.user_skill.level
                     })
+                    .catch(err => console.log(err))
                 },
                 submitUserSkillLevel(userId, skillId, level) {
                     _api.fetchUser(userId).then(user => {
