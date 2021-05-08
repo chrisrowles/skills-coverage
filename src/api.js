@@ -7,6 +7,7 @@ api.fetchUsers = async () => {
 }
 
 api.fetchUser = async (id) => {
+    console.log(id)
     const response = await fetch(url + '/users/' + id)
     return response.json()
 }

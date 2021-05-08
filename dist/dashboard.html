@@ -90,11 +90,10 @@
         </div>
     </nav>
     
-    <div class="container w-full mx-auto pt-20" x-data="manage()" x-init="fetchDashboard()">
+    <div class="container w-full mx-auto pt-20" x-data="manage()" x-init="fetchDashboard">
         <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                 <h2 class="text-2xl">Team Skill Coverage</h2>
-                <button type="button" class="bg-red-500 p-3" @click="test()">Fetch Users</button>
             </div>
             <div class="flex flex-wrap">
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
@@ -172,6 +171,52 @@
             </div>
             
             <hr class="border-gray-300 my-8 mx-4">
+
+            <div class="field-group mb-4 md:w-full">
+                <label class="field-label" for="user">Person</label>
+                <select class="field" name="user" x-model="selectedUser">
+                    <option value="">Select an option</option>
+                    <template x-for="user in users">
+                        <option :key="user.id"
+                                :value="user.id"
+                                x-text="user.name"></option>
+                    </template>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div class="field-group mb-4 md:w-full">
+                <label class="field-label" for="skill">Skill</label>
+                <select class="field" name="skill" x-model="selectedSkill">
+                    <option value="">Select an option</option>
+                    <template x-for="skill in skills">
+                        <option
+                            :key="skill.id"
+                            :value="skill.id"
+                            x-text="skill.name">
+                        </option>
+                    </template>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                clip-rule="evenodd"
+                                fill-rule="evenodd">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+            <div class="field-group mb-6 md:w-full">
+                <label class="field-label" for="level">Level</label>
+                <input class="field" type="number" name="level" id="level" min="0" max="5" required x-model="skillLevel">
+            </div>
+            <button class="btn bg-blue-500" type="submit" @click="getSkillLevelForSelectedUser()">Submit score</button>
             
             <div class="flex flex-row flex-wrap flex-grow mt-2">
                 <div class="w-full md:w-1/2 p-3">
@@ -274,12 +319,17 @@
             </div>
         </div>
     </div>
+
     <script src="./skills-matrix.js"></script>
     <script>
         function manage() {
             let users = [], skills = []
             return {
-                users, skills,
+                users,
+                skills,
+                selectedUser: '',
+                selectedSkill: '',
+                skillLevel: '',
                 fetchDashboard() {
                     this.fetchUsers()
                     this.fetchSkills()
@@ -289,24 +339,30 @@
                         this.users = data
                     })
                 },
-                fetchUserById: id => {
+                fetchUserById(id) {
                     _api.fetchUser(id).then(user => console.log(user))
                 },
                 fetchSkills() {
                     _api.fetchSkills().then(data => this.skills = data)
                 },
-                fetchSkillById: id => {
+                fetchSkillById(id) {
                     _api.fetchSkill(id).then(skill => console.log(skill))
                 },
-                setUserSkillLevel: (user, skill, level) => {
-                    _api.setUserSkillLevel(user, skill, level).then(result => console.log(result))
+                getSkillLevelForSelectedUser() {
+                    _api.fetchUser(this.selectedUser).then(user => {
+                        let hasSkill = user.skills.find(s => s.id === parseInt(this.selectedSkill))
+
+                        if (hasSkill) {
+                            this.skillLevel = hasSkill.user_skill.level
+                        }
+                    })
                 },
-                test() {
-                    _api.fetchUser(1).then(user => {
+                submitUserSkillLevel(userId, skillId, level) {
+                    _api.fetchUser(userId).then(user => {
                         if (user) {
-                            _api.fetchSkill(4).then(skill => {
+                            _api.fetchSkill(skillId).then(skill => {
                                 if (skill) {
-                                    _api.setUserSkillLevel(user, skill, 3).then(result => console.log(result))
+                                    _api.setUserSkillLevel(user, skill, level).then(result => console.log(result))
                                 }
                             })
                         }
