@@ -3,15 +3,11 @@ const Skill = db.skills
 const Op = db.Sequelize.Op
 
 exports.create = (req, res) => {
-    if (!req.body.name) {
-        res.status(400).send({
-            message: "Invalid Request"
-        })
-        return
-    }
-
     const skill = {
-        name: req.body.name
+        name: req.body.name,
+        weighting: req.body.weighting,
+        minimumLevel: req.body.minimum_level,
+        requiredAtMinimumLevel: req.body.required_at_minimum_level
     }
 
     Skill.create(skill)

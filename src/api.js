@@ -19,9 +19,9 @@ api.createUser = async (name) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 name: name
-            }
+            })
         })
 
         return response.json()
@@ -38,9 +38,9 @@ api.updateUser = async (id, name) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 name: name
-            }
+            })
         })
 
         return response.json()
@@ -48,7 +48,6 @@ api.updateUser = async (id, name) => {
         return err
     }
 }
-
 
 api.fetchSkills = async () => {
     const response = await fetch(url + '/skills')
@@ -68,9 +67,9 @@ api.createSkill = async (name) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 name: name
-            }
+            })
         })
 
         return response.json()
@@ -87,9 +86,30 @@ api.updateSkill = async (id, name) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: {
+            body: JSON.stringify({
                 name: name
-            }
+            })
+        })
+
+        return response.json()
+    } catch(err) {
+        return err
+    }
+}
+
+api.setUserSkillLevel = async (user, skill, level) => {
+    try {
+        const response = await fetch(url + '/user/skills', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                user_id: user.id,
+                skill_id: skill.id,
+                level: level
+            })
         })
 
         return response.json()

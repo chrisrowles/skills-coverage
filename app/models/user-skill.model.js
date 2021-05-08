@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         }
     }, {
-        tableName: 'user_skill',
+        tableName: 'user_skills',
         underscored: true
     })
 
