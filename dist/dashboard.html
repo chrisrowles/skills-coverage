@@ -304,12 +304,10 @@
                     _api.setUserSkillLevel(user, skill, level).then(result => console.log(result))
                 },
                 test() {
-                    _api.fetchUser(1).then(response => {
-                        if (response) {
-                            let user = response
+                    _api.fetchUser(1).then(user => {
+                        if (user) {
                             _api.fetchSkill(3).then(skill => {
                                 if (skill) {
-                                    console.log(user, skill)
                                     _api.setUserSkillLevel(user, skill, 5).then(result => console.log(result))
                                 }
                             })

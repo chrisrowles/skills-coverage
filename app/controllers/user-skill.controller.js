@@ -2,10 +2,9 @@ const db = require("../models")
 const UserSkill = db.userSkills
 
 exports.create = (req, res) => {
-    console.log(req.body)
     const userSkill = {
-        userId: req.body.user_id,
-        skillId: req.body.skill_id,
+        userId: req.body.user.id,
+        skillId: req.body.skill.id,
         level: req.body.level
     }
 

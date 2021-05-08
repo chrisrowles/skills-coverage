@@ -106,8 +106,8 @@ api.setUserSkillLevel = async (user, skill, level) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                user_id: user.id,
-                skill_id: skill.id,
+                user: user,
+                skill: skill,
                 level: level
             })
         })
