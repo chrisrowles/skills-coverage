@@ -19,3 +19,25 @@ exports.create = (req, res) => {
         })
     })
 }
+
+exports.update = (req, res) => {
+    const userId = req.params.user_id
+    const skillId = req.params.skill_id
+    
+    UserSkill.update({
+        level: req.body.level
+    }, {
+        where: { userId: userId, skillId: skillId }
+    })
+    .then(result => {
+        if (result == 1) {
+            res.send({
+                message: "User skill successfully updated"
+            })
+        } else {
+            res.send({
+                message: `Error updating user ${id}`
+            })
+        }
+    })
+}

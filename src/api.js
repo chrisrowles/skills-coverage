@@ -119,4 +119,23 @@ api.setUserSkillLevel = async (user, skill, level) => {
     }
 }
 
+api.updateUserSkillLevel = async (user, skill, level) => {
+    try {
+        const response = await fetch(url + '/user/skills/' + user.id + '/' + skill.id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                level: level
+            })
+        })
+
+        return response.json()
+    } catch(err) {
+        return err
+    }
+}
+
 export default api

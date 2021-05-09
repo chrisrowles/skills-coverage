@@ -3,6 +3,7 @@ module.exports = app => {
     const router = require("express").Router()
     
     router.post("/", userSkills.create)
+    router.put("/:user_id/:skill_id", userSkills.update)
     
     app.use("/api/user/skills", router)
 }

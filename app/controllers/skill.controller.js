@@ -55,7 +55,12 @@ exports.single = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id
     
-    Skill.update(req.name, {
+    Skill.update({
+        name: req.body.name,
+        weighting: req.body.weighting,
+        minimumLevel: req.body.minimum_level,
+        requiredAtMinimumLevel: req.body.required_at_minimum_level
+    }, {
         where: { id: id }
     })
     .then(result => {

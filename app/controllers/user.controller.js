@@ -64,13 +64,15 @@ exports.single = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id
     
-    User.update(req.name, {
+    User.update({
+        name: req.body.name
+    }, {
         where: { id: id }
     })
     .then(result => {
         if (result == 1) {
             res.send({
-                message: "Tutorial successfully updated"
+                message: "User successfully updated"
             })
         } else {
             res.send({
