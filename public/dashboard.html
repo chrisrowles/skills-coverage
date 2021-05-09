@@ -315,33 +315,31 @@
                 },
                 refreshDashboard() {
                     return this.fetchUsers().then(users => {
-                        this.users = users
+                        this.users = users // select option template x-for values
                         this.fetchSkills().then(skills => {
-                            this.skills = skills
-                            skills.forEach(skill => {
-                                this.calculateSkillCoverage(users, skill)
-                            })
+                            this.skills = skills // select option template x-for values
+                            skills.forEach(skill => this.calculateSkillCoverage(users, skill))
                         })
-                        .catch(err => _notify.send('error', 'Unable to fetch data'))
+                        .catch(err => {
+                            console.log(err)
+                            _notify.send('error', 'Unable to fetch data')
+                        })
                     })
                 },
-                calculateSkillCoverage() {
-                    let skills = ['dotnet', 'javascript', 'angular', 'aws', 'gcp', 'azure']
-                    skills.forEach(skill => {
-                        let stat = _calculate.overallCoverageForSkill(this.users, skill)
+                calculateSkillCoverage(users, skill) {
+                    let stat = _calculate.overallCoverageForSkill(users, skill)
 
-                        if (stat) {
-                            let el = document.getElementById(skill + '-coverage')
+                    if (stat) {
+                        let el = document.getElementById(stat.skill + '-coverage')
 
-                            el.innerText = `%${stat.coveragePercent}`
+                        el.innerText = `%${stat.coveragePercent}`
 
-                            let span = document.createElement('span')
-                            span.classList = "ml-2 text-sm text-gray-400 inline-block align-middle"
-                            span.innerText = `(${stat.numPeopleRequiredToAchieveCoverage} more people required).`
+                        let span = document.createElement('span')
+                        span.classList = "ml-2 text-sm text-gray-400 inline-block align-middle"
+                        span.innerText = `(${stat.numPeopleRequiredToAchieveCoverage} more people required).`
 
-                            el.appendChild(span)
-                        }
-                    })
+                        el.appendChild(span)
+                    }
                 },
                 getSkillLevelForSelectedUserAndSkill() {
                     _api.fetchUser(this.selectedUser)

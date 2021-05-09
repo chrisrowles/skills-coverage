@@ -1,6 +1,6 @@
 const calculate = {}
 
-calculate.overallCoverageForSkill = (users, skillName) => {
+calculate.overallCoverageForSkill = (users, skill) => {
     let overallLevel = 0
     let numPeopleAtMinimumLevel = 0
     let minimumLevel = 0
@@ -8,11 +8,11 @@ calculate.overallCoverageForSkill = (users, skillName) => {
 
     users.forEach(user => {
         try {
-            let skill = user.skills.find(s => s.name === skillName)
-            minimumLevel = skill.minimumLevel
-            requiredAtMinimumLevel = skill.requiredAtMinimumLevel
+            let record = user.skills.find(s => s.name === skill.name)
+            minimumLevel = record.minimumLevel
+            requiredAtMinimumLevel = record.requiredAtMinimumLevel
     
-            let userLevel = skill.user_skill.level
+            let userLevel = record.user_skill.level
             overallLevel += userLevel
     
             if (userLevel >= minimumLevel) {
@@ -30,7 +30,7 @@ calculate.overallCoverageForSkill = (users, skillName) => {
     if (numPeopleRequiredToAchieveCoverage < 0) numPeopleRequiredToAchieveCoverage = 0
 
     return {
-        skill: skillName,
+        skill: skill.name,
         overallLevel: overallLevel, // dunno if this is really useful for anything...
         numPeopleAtMinimumLevel: numPeopleAtMinimumLevel,
         numPeopleRequiredAtMinimumLevel: requiredAtMinimumLevel,
