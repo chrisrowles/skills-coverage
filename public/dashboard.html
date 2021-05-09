@@ -301,6 +301,18 @@
                 selectedUser: '',
                 selectedSkill: '',
                 skillLevel: '',
+                async fetchUsers() {
+                    return await _api.fetchUsers()
+                },
+                async fetchUserById(id) {
+                    return await _api.fetchUser(id)
+                },
+                async fetchSkills() {
+                    return await _api.fetchSkills()
+                },
+                async fetchSkillById(id) {
+                    return await _api.fetchSkill(id)
+                },
                 refreshDashboard() {
                     return this.fetchUsers().then(users => {
                         this.users = users
@@ -330,18 +342,6 @@
                             el.appendChild(span)
                         }
                     })
-                },
-                async fetchUsers() {
-                    return await _api.fetchUsers()
-                },
-                async fetchUserById(id) {
-                    return await _api.fetchUser(id)
-                },
-                async fetchSkills() {
-                    return await _api.fetchSkills()
-                },
-                async fetchSkillById(id) {
-                    return await _api.fetchSkill(id)
                 },
                 getSkillLevelForSelectedUserAndSkill() {
                     _api.fetchUser(this.selectedUser)
