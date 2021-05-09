@@ -102,7 +102,7 @@
                                 <div class="rounded"><i class="devicon-dotnetcore-plain colored fa-5x"></i></div>
                             </div>
                             <div class="flex-1 pl-4">
-                                <h3 class="text-3xl">%100 <span class="text-sm text-gray-400 inline-block align-middle">(No skills gap).</span></h3>
+                                <h3 class="text-3xl" id="dotnet-coverage"></h3>
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                                 <div class="rounded"><i class="devicon-javascript-plain colored fa-5x"></i></div>
                             </div>
                             <div class="flex-1 pl-4">
-                                <h3 class="text-3xl">%80 <span class="text-sm text-gray-400 inline-block align-middle">(1 more person required).</span></h3>
+                                <h3 class="text-3xl" id="javascript-coverage"></h3>
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                                 <div class="rounded"><i class="devicon-angularjs-plain colored fa-5x"></i></div>
                             </div>
                             <div class="flex-1 pl-4">
-                                <h3 class="text-3xl">%33 <span class="text-sm text-gray-400 inline-block align-middle">(3 more people required).</span></h3>
+                                <h3 class="text-3xl" id="angular-coverage"></h3>
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                                 <div class="rounded"><i class="devicon-amazonwebservices-original colored fa-5x"></i></div>
                             </div>
                             <div class="flex-1 pl-4">
-                                <h3 class="text-3xl">%33 <span class="text-sm text-gray-400 inline-block align-middle">(3 more people required).</span></h3>
+                                <h3 class="text-3xl" id="aws-coverage"></h3>
                             </div>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
                                 <div class="rounded"><i class="devicon-google-plain colored fa-5x"></i></div>
                             </div>
                             <div class="flex-1 pl-4">
-                                <h3 class="text-3xl">%20 <span class="text-sm text-gray-400 inline-block align-middle">(4 more people required).</span></h3>
+                                <h3 class="text-3xl" id="gcp-coverage"></h3>
                             </div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                                 <div class="rounded"><i class="devicon-bash-plain colored fa-5x"></i></div>
                             </div>
                             <div class="flex-1 pl-4">
-                                <h3 class="text-3xl">%20 <span class="text-sm text-gray-400 inline-block align-middle">(4 more people required).</span></h3>
+                                <h3 class="text-3xl" id="azure-coverage"></h3>
                             </div>
                         </div>
                     </div>
@@ -260,8 +260,22 @@
                         this.users = data
 
                         // Example
-                        let dotnetCoverage = _calculate.overallCoverageForSkill(data, "dotnet")
-                        console.log(dotnetCoverage)
+                        let skills = ['dotnet', 'javascript', 'angular', 'aws', 'gcp', 'azure']
+                        skills.forEach(skill => {
+                            let stat = _calculate.overallCoverageForSkill(data, skill)
+
+                            if (stat) {
+                                let el = document.getElementById(skill + '-coverage')
+
+                                el.innerText = `%${stat.coveragePercent}`
+
+                                let span = document.createElement('span')
+                                span.classList = "ml-2 text-sm text-gray-400 inline-block align-middle"
+                                span.innerText = `(${stat.numPeopleRequiredToAchieveCoverage} more people required).`
+
+                                el.appendChild(span)
+                            }
+                        })
                     })
                 },
                 fetchUserById(id) {

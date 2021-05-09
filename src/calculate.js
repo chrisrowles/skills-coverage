@@ -19,18 +19,24 @@ calculate.overallCoverageForSkill = (users, skillName) => {
                 ++numPeopleAtMinimumLevel
             }
         } catch (err) {
-            return err
+            return
         }
     })
+
+    let coveragePercent = Math.round(numPeopleAtMinimumLevel / requiredAtMinimumLevel * 100)
+    if (coveragePercent > 100) coveragePercent = 100
+
+    let numPeopleRequiredToAchieveCoverage = requiredAtMinimumLevel - numPeopleAtMinimumLevel
+    if (numPeopleRequiredToAchieveCoverage < 0) numPeopleRequiredToAchieveCoverage = 0
 
     return {
         skill: skillName,
         overallLevel: overallLevel, // dunno if this is really useful for anything...
         numPeopleAtMinimumLevel: numPeopleAtMinimumLevel,
         numPeopleRequiredAtMinimumLevel: requiredAtMinimumLevel,
-        numPeopleRequiredToAchieveCoverage: requiredAtMinimumLevel - numPeopleAtMinimumLevel,
+        numPeopleRequiredToAchieveCoverage: numPeopleRequiredToAchieveCoverage,
         coverageAchieved: (numPeopleAtMinimumLevel >= requiredAtMinimumLevel) ? true : false,
-        coveragePercent: Math.round(numPeopleAtMinimumLevel / requiredAtMinimumLevel * 100),
+        coveragePercent: coveragePercent,
     }
 }
 
