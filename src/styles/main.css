@@ -29,3 +29,19 @@
 .link-grey:hover {
     @apply text-gray-500;
 }
+
+.swal2-container .swal2-popup.swal2-toast {
+    flex-direction: column;
+    align-items: start;
+    position: relative;
+}
+.swal2-container .swal2-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -20px !important;
+}
+.swal2-container .swal2-popup.swal2-toast .swal2-title,
+.swal2-container .swal2-popup.swal2-toast .swal2-content {
+    margin-left: 60px;
+    text-align: left;
+}

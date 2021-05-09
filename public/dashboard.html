@@ -10,6 +10,7 @@
     <meta name="keywords" content="keywords,here">
     
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js" integrity="sha256-XF29CBwU1MWLaGEnsELogU6Y6rcc5nCkhhx89nFMIDQ=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.11.0/devicon.min.css">
 </head>
 
@@ -89,7 +90,7 @@
         </div>
     </nav>
     
-    <div class="container w-full mx-auto pt-20" x-data="manage()" x-init="fetchDashboard">
+    <div class="container w-full mx-auto pt-20" x-data="manage()" x-init="refreshDashboard">
         <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
             <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                 <h2 class="text-2xl">Team Skill Coverage</h2>
@@ -171,36 +172,85 @@
             
             <hr class="border-gray-300 my-8 mx-4">
 
-            <div class="p-3">
-                <div class="field-group mb-4 md:w-full">
-                    <label class="field-label" for="user">Person</label>
-                    <select class="field" name="user" x-model="selectedUser">
-                        <option value="">Select an option</option>
-                        <template x-for="user in users">
-                            <option :key="user.id"
-                                    :value="user.id"
-                                    x-text="user.name"></option>
-                        </template>
-                    </select>
+            <div class="flex flex-row flex-wrap flex-grow mt-2">
+                <div class="w-full md:w-1/2 p-3">
+                    <div class="bg-white border rounded shadow h-full">
+                        <div class="border-b p-3">
+                            <h5 class="uppercase text-gray-600">Skill Coverage Trend</h5>
+                        </div>
+                        <div class="p-5">
+                            <canvas id="chartjs-7" class="chartjs" width="undefined" height="undefined"></canvas>
+                            <script>
+                                new Chart(document.getElementById("chartjs-7"), {
+                                    "type": "bar",
+                                    "data": {
+                                        "labels": ["January", "February", "March", "April"],
+                                        "datasets": [{
+                                            "label": "Fulfilled Coverage",
+                                            "data": [10, 20, 30, 40],
+                                            "borderColor": "rgb(255, 99, 132)",
+                                            "backgroundColor": "rgba(196, 71, 58, 0.2)"
+                                        }, {
+                                            "label": "Variation",
+                                            "data": [5, 15, 10, 30],
+                                            "type": "line",
+                                            "fill": false,
+                                            "borderColor": "rgb(54, 162, 235)"
+                                        }]
+                                    },
+                                    "options": {
+                                        "scales": {
+                                            "yAxes": [{
+                                                "ticks": {
+                                                    "beginAtZero": true
+                                                }
+                                            }]
+                                        }
+                                    }
+                                });
+                            </script>
+                        </div>
+                    </div>
                 </div>
-                <div class="field-group mb-4 md:w-full">
-                    <label class="field-label" for="skill">Skill</label>
-                    <select class="field" name="skill" x-model="selectedSkill" @change="getSkillLevelForSelectedUserAndSkill()">
-                        <option value="">Select an option</option>
-                        <template x-for="skill in skills">
-                            <option
-                                :key="skill.id"
-                                :value="skill.id"
-                                x-text="skill.name">
-                            </option>
-                        </template>
-                    </select>
+                
+                <div class="w-full md:w-1/2 p-3">
+                    <div class="bg-white border rounded shadow h-full">
+                        <div class="border-b p-3">
+                            <h5 class="uppercase text-gray-600">Update Team Member Skills</h5>
+                        </div>
+                        <div class="p-5">
+                            <div class="field-group mb-4 md:w-full">
+                                <label class="field-label" for="user">Person</label>
+                                <select class="field" name="user" x-model="selectedUser" @change="getSkillLevelForSelectedUserAndSkill()">
+                                    <option value="">Select a person</option>
+                                    <template x-for="user in users">
+                                        <option :key="user.id"
+                                                :value="user.id"
+                                                x-text="user.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div class="field-group mb-4 md:w-full">
+                                <label class="field-label" for="skill">Skill</label>
+                                <select class="field" name="skill" x-model="selectedSkill" @change="getSkillLevelForSelectedUserAndSkill()">
+                                    <option value="">Select a skill</option>
+                                    <template x-for="skill in skills">
+                                        <option
+                                            :key="skill.id"
+                                            :value="skill.id"
+                                            x-text="skill.name">
+                                        </option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div class="field-group mb-6 md:w-full">
+                                <label class="field-label" for="level">Level</label>
+                                <input class="field" type="number" name="level" id="level" min="0" max="5" required x-model="skillLevel">
+                            </div>
+                            <button class="btn bg-blue-500" @click="updateUserSkillLevel">Update Skill</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="field-group mb-6 md:w-full">
-                    <label class="field-label" for="level">Level</label>
-                    <input class="field" type="number" name="level" id="level" min="0" max="5" required x-model="skillLevel">
-                </div>
-                <button class="btn bg-blue-500" @click="updateUserSkillLevel">Update Skill</button>
             </div>
             
             <div class="flex flex-row flex-wrap flex-grow mt-2">               
@@ -251,41 +301,47 @@
                 selectedUser: '',
                 selectedSkill: '',
                 skillLevel: '',
-                fetchDashboard() {
-                    this.fetchUsers()
-                    this.fetchSkills()
-                },
-                fetchUsers() {
-                    _api.fetchUsers().then(data => {
-                        this.users = data
-
-                        // Example
-                        let skills = ['dotnet', 'javascript', 'angular', 'aws', 'gcp', 'azure']
-                        skills.forEach(skill => {
-                            let stat = _calculate.overallCoverageForSkill(data, skill)
-
-                            if (stat) {
-                                let el = document.getElementById(skill + '-coverage')
-
-                                el.innerText = `%${stat.coveragePercent}`
-
-                                let span = document.createElement('span')
-                                span.classList = "ml-2 text-sm text-gray-400 inline-block align-middle"
-                                span.innerText = `(${stat.numPeopleRequiredToAchieveCoverage} more people required).`
-
-                                el.appendChild(span)
-                            }
+                refreshDashboard() {
+                    return this.fetchUsers().then(users => {
+                        this.users = users
+                        this.fetchSkills().then(skills => {
+                            this.skills = skills
+                            skills.forEach(skill => {
+                                this.calculateSkillCoverage(users, skill)
+                            })
                         })
+                        .catch(err => _notify.send('error', 'Unable to fetch data'))
                     })
                 },
-                fetchUserById(id) {
-                    _api.fetchUser(id).then(user => console.log(user))
+                calculateSkillCoverage() {
+                    let skills = ['dotnet', 'javascript', 'angular', 'aws', 'gcp', 'azure']
+                    skills.forEach(skill => {
+                        let stat = _calculate.overallCoverageForSkill(this.users, skill)
+
+                        if (stat) {
+                            let el = document.getElementById(skill + '-coverage')
+
+                            el.innerText = `%${stat.coveragePercent}`
+
+                            let span = document.createElement('span')
+                            span.classList = "ml-2 text-sm text-gray-400 inline-block align-middle"
+                            span.innerText = `(${stat.numPeopleRequiredToAchieveCoverage} more people required).`
+
+                            el.appendChild(span)
+                        }
+                    })
                 },
-                fetchSkills() {
-                    _api.fetchSkills().then(data => this.skills = data)
+                async fetchUsers() {
+                    return await _api.fetchUsers()
                 },
-                fetchSkillById(id) {
-                    _api.fetchSkill(id).then(skill => console.log(skill))
+                async fetchUserById(id) {
+                    return await _api.fetchUser(id)
+                },
+                async fetchSkills() {
+                    return await _api.fetchSkills()
+                },
+                async fetchSkillById(id) {
+                    return await _api.fetchSkill(id)
                 },
                 getSkillLevelForSelectedUserAndSkill() {
                     _api.fetchUser(this.selectedUser)
@@ -293,23 +349,31 @@
                         let skill = user.skills.find(s => s.id === parseInt(this.selectedSkill))
                         if (skill) this.skillLevel = skill.user_skill.level
                     })
-                    .catch(err => console.log(err))
+                    .catch(err => _notify.send("Unable to get skill level, an unexpected error occurred."))
                 },
                 setUserSkillLevel() {
                     _api.fetchUser(this.selectedUser)
                     .then(user => {
                         _api.fetchSkill(this.selectedSkill).then(skill => {
-                            _api.setUserSkillLevel(user, skill, parseInt(this.skillLevel)).then(result => console.log(result))
+                            _api.setUserSkillLevel(user, skill, parseInt(this.skillLevel)).then(result => {
+                                _notify.send('success', result.message)
+                                this.refreshDashboard()
+                            })
                         })
                     })
+                    .catch(err => _notify.send("Unable to set skill level, an unexpected error occurred."))
                 },
                 updateUserSkillLevel() {
                     _api.fetchUser(this.selectedUser)
                     .then(user => {
                         _api.fetchSkill(this.selectedSkill).then(skill => {
-                            _api.updateUserSkillLevel(user, skill, parseInt(this.skillLevel)).then(result => console.log(result))
+                            _api.updateUserSkillLevel(user, skill, parseInt(this.skillLevel)).then(result => {
+                                _notify.send('success', result.message)
+                                this.refreshDashboard()
+                            })
                         })
                     })
+                    .catch(err => _notify.send("Unable to update skill level, an unexpected error occurred."))
                 }
             }
         }
