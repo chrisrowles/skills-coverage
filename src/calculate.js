@@ -1,7 +1,6 @@
 const calculate = {}
 
 calculate.overallCoverageForSkill = (users, skillName) => {
-    let skillName = "dotnet"
     let overallLevel = 0
     let numPeopleAtMinimumLevel = 0
     let minimumLevel = 0
@@ -33,3 +32,5 @@ calculate.overallCoverageForSkill = (users, skillName) => {
         coveragePercent: Math.round(numPeopleAtMinimumLevel / requiredAtMinimumLevel * 100)
     }
 }
+
+export default calculate
