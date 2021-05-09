@@ -1,4 +1,5 @@
 const cors = require("cors")
+const path = require("path")
 const express = require("express")
 
 const app = express()
@@ -10,9 +11,10 @@ db.sequelize.sync()
 app.use(cors(config))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use('/assets',express.static(path.join(__dirname, 'public/assets')));
 
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome." })
+    res.sendFile(path.join(__dirname, '/public/dashboard.html'));
 })
 
 require("./app/routes/user.routes")(app)

@@ -23,6 +23,10 @@ calculate.overallCoverageForSkill = (users, skillName) => {
         }
     })
 
+    /**
+     * TODO calulate the remainder to give us the number of people required to achieve coverage
+     */
+
     return {
         skill: skillName,
         numPeopleAtMinimumLevel: numPeopleAtMinimumLevel,

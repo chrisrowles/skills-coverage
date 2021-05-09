@@ -4,7 +4,7 @@ module.exports = {
     mode: 'development',
     entry: './src/main.js',
     output: {
-        path: path.join(__dirname, '/dist'),
+        path: path.join(__dirname, '/public/assets'),
         filename: 'skills-matrix.js'
     },
     module: {
