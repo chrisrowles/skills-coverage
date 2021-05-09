@@ -176,6 +176,44 @@
                 <div class="w-full md:w-1/2 p-3">
                     <div class="bg-white border rounded shadow h-full">
                         <div class="border-b p-3">
+                            <h5 class="uppercase text-gray-600">Update Team Member Skills</h5>
+                        </div>
+                        <div class="p-5">
+                            <div class="field-group mb-4 md:w-full">
+                                <label class="field-label" for="user">Person</label>
+                                <select class="field" name="user" x-model="selectedUser" @change="getSkillLevelForSelectedUserAndSkill()">
+                                    <option value="">Select a person</option>
+                                    <template x-for="user in users">
+                                        <option :key="user.id"
+                                                :value="user.id"
+                                                x-text="user.name"></option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div class="field-group mb-4 md:w-full">
+                                <label class="field-label" for="skill">Skill</label>
+                                <select class="field" name="skill" x-model="selectedSkill" @change="getSkillLevelForSelectedUserAndSkill()">
+                                    <option value="">Select a skill</option>
+                                    <template x-for="skill in skills">
+                                        <option
+                                            :key="skill.id"
+                                            :value="skill.id"
+                                            x-text="skill.name">
+                                        </option>
+                                    </template>
+                                </select>
+                            </div>
+                            <div class="field-group mb-6 md:w-full">
+                                <label class="field-label" for="level">Level</label>
+                                <input class="field" type="number" name="level" id="level" min="0" max="5" required x-model="skillLevel">
+                            </div>
+                            <button class="btn bg-blue-500" @click="updateUserSkillLevel">Update Skill</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 p-3">
+                    <div class="bg-white border rounded shadow h-full">
+                        <div class="border-b p-3">
                             <h5 class="uppercase text-gray-600">Skill Coverage Trend</h5>
                         </div>
                         <div class="p-5">
@@ -209,45 +247,6 @@
                                     }
                                 });
                             </script>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="w-full md:w-1/2 p-3">
-                    <div class="bg-white border rounded shadow h-full">
-                        <div class="border-b p-3">
-                            <h5 class="uppercase text-gray-600">Update Team Member Skills</h5>
-                        </div>
-                        <div class="p-5">
-                            <div class="field-group mb-4 md:w-full">
-                                <label class="field-label" for="user">Person</label>
-                                <select class="field" name="user" x-model="selectedUser" @change="getSkillLevelForSelectedUserAndSkill()">
-                                    <option value="">Select a person</option>
-                                    <template x-for="user in users">
-                                        <option :key="user.id"
-                                                :value="user.id"
-                                                x-text="user.name"></option>
-                                    </template>
-                                </select>
-                            </div>
-                            <div class="field-group mb-4 md:w-full">
-                                <label class="field-label" for="skill">Skill</label>
-                                <select class="field" name="skill" x-model="selectedSkill" @change="getSkillLevelForSelectedUserAndSkill()">
-                                    <option value="">Select a skill</option>
-                                    <template x-for="skill in skills">
-                                        <option
-                                            :key="skill.id"
-                                            :value="skill.id"
-                                            x-text="skill.name">
-                                        </option>
-                                    </template>
-                                </select>
-                            </div>
-                            <div class="field-group mb-6 md:w-full">
-                                <label class="field-label" for="level">Level</label>
-                                <input class="field" type="number" name="level" id="level" min="0" max="5" required x-model="skillLevel">
-                            </div>
-                            <button class="btn bg-blue-500" @click="updateUserSkillLevel">Update Skill</button>
                         </div>
                     </div>
                 </div>
@@ -347,7 +346,10 @@
                         let skill = user.skills.find(s => s.id === parseInt(this.selectedSkill))
                         if (skill) this.skillLevel = skill.user_skill.level
                     })
-                    .catch(err => _notify.send("Unable to get skill level, an unexpected error occurred."))
+                    .catch(err => {
+                        console.log(err)
+                        _notify.send("Unable to get skill level, an unexpected error occurred.")
+                    })
                 },
                 setUserSkillLevel() {
                     _api.fetchUser(this.selectedUser)
@@ -359,19 +361,25 @@
                             })
                         })
                     })
-                    .catch(err => _notify.send("Unable to set skill level, an unexpected error occurred."))
+                    .catch(err => {
+                        console.log(err)
+                        _notify.send("Unable to set skill level, an unexpected error occurred.")
+                    })
                 },
                 updateUserSkillLevel() {
                     _api.fetchUser(this.selectedUser)
                     .then(user => {
                         _api.fetchSkill(this.selectedSkill).then(skill => {
-                            _api.updateUserSkillLevel(user, skill, parseInt(this.skillLevel)).then(result => {
+                            _api.set4UserSkillLevel(user, skill, parseInt(this.skillLevel)).then(result => {
                                 _notify.send('success', result.message)
                                 this.refreshDashboard()
                             })
                         })
                     })
-                    .catch(err => _notify.send("Unable to update skill level, an unexpected error occurred."))
+                    .catch(err => {
+                        console.log(err)
+                        _notify.send("Unable to update skill level, an unexpected error occurred.")
+                    })
                 }
             }
         }
