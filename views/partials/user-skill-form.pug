@@ -1,0 +1,20 @@
+.bg-white.border.rounded.shadow.h-full
+  .border-b.p-3
+    h5.uppercase.text-gray-600 Update Team Member Skills
+  .p-5
+    .field-group.mb-4(class='md:w-full')
+      label.field-label(for='user') Person
+      select.field(name='user' x-model='selectedUser' @change='getSkillLevelForSelectedUserAndSkill()')
+        option(value='') Select a person
+        template(x-for='user in users')
+          option(:key='user.id' :value='user.id' x-text='user.name')
+    .field-group.mb-4(class='md:w-full')
+      label.field-label(for='skill') Skill
+      select.field(name='skill' x-model='selectedSkill' @change='getSkillLevelForSelectedUserAndSkill()')
+        option(value='') Select a skill
+        template(x-for='skill in skills')
+          option(:key='skill.id' :value='skill.id' x-text='skill.name')
+    .field-group.mb-6(class='md:w-full')
+      label.field-label(for='level') Level
+      input#level.field(type='number' name='level' min='0' max='5' required='' x-model='skillLevel')
+    button.btn.bg-blue-500(@click='updateUserSkillLevel') Update Skill

@@ -1,0 +1,27 @@
+extends layout
+
+include mixins/dashboard
+
+block content
+  .container.w-full.mx-auto.pt-20(x-data='manage()' x-init='refreshDashboard')
+    .w-full.px-4.mb-16.text-gray-800.leading-normal(class='md:px-0 md:mt-8')
+      .w-full.p-3(class='md:w-1/2 xl:w-1/3')
+        h1.text-2xl Team Skill Coverage
+      .flex.flex-wrap
+        +coverage-tile('dotnet', 'devicon-dotnetcore-plain')
+        +coverage-tile('javascript', 'devicon-javascript-plain')
+        +coverage-tile('angular', 'devicon-angularjs-plain')
+        +coverage-tile('aws', 'devicon-amazonwebservices-original')
+        +coverage-tile('gcp', 'devicon-google-plain')
+        +coverage-tile('azure', 'devicon-bash-plain')
+      hr.border-gray-300.my-8.mx-4
+      .flex.flex-row.flex-wrap.flex-grow.mt-2
+        .w-full.p-3(class='md:w-1/2')
+          include partials/user-skill-form
+        .w-full.p-3(class='md:w-1/2')
+          include partials/team-skill-trend
+        .w-full.p-3
+          include partials/user-skill-table
+  script(src='/assets/skills-matrix.js')
+  +x-data-manage
+

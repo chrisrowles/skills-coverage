@@ -18,6 +18,38 @@
     @apply block text-white uppercase text-lg p-2 rounded;
 }
 
+.dropdown {
+    @apply bg-white rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible
+}
+
+.separator {
+    @apply border-t mx-1 border-gray-100
+}
+
+.navbar-nav {
+    @apply w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0
+}
+
+.navbar-content {
+    @apply w-full flex-grow lg:flex lg:items-center lg:w-auto hidden lg:block mt-2 lg:mt-0 bg-white z-20
+}
+
+.mobile-nav-btn {
+    @apply flex items-center px-3 py-2 border rounded text-gray-500 border-gray-600 hover:text-gray-900 hover:border-gray-500 appearance-none focus:outline-none
+}
+
+.nav-search {
+    @apply w-full bg-gray-100 text-sm text-gray-800 transition border focus:outline-none focus:border-gray-700 rounded py-1 px-2 pl-10 appearance-none leading-normal
+}
+
+.nav-link {
+    @apply block py-1 md:py-3 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 border-b-2 border-white hover:border-yellow-500
+}
+
+.user-link {
+    @apply px-4 py-2 block text-gray-900 hover:bg-gray-400 no-underline hover:no-underline
+}
+
 .link {
     @apply block no-underline text-sm;
 }

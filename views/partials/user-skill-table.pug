@@ -1,0 +1,20 @@
+.bg-white.border.rounded.shadow
+  .border-b.p-3
+    h5.font-bold.uppercase.text-gray-600 Table
+  .p-5
+    table.table-auto.border-collapse.w-full
+      thead
+        tr.rounded-lg.text-sm.text-gray-700.bg-gray-100.text-left.uppercase
+          th.px-2.py-4 Name/Skill
+          template(x-for='skill in skills')
+            th.px-2.py-4(x-text='skill.name')
+      tbody.text-sm.font-normal.text-gray-700
+        template(x-for='user in users')
+          tr
+            td.px-2.py-2(x-text='user.name')
+            template(x-for='skill in user.skills')
+              td.px-2.py-2(:class="{\
+              'bg-green-100': skill.user_skill.level > 3,\
+              'bg-yellow-100': skill.user_skill.level > 2 && skill.user_skill.level <= 3,\
+              'bg-red-100': skill.user_skill.level <= 2,\
+              }" x-text='skill.user_skill.level')

@@ -1,0 +1,13 @@
+doctype html
+html
+    head
+        title=title
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        link(rel='stylesheet' href='https://use.fontawesome.com/releases/v5.3.1/css/all.css' integrity='sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU' crossorigin='anonymous')
+        link(rel='stylesheet' href='https://cdn.jsdelivr.net/gh/devicons/devicon@v2.11.0/devicon.min.css')
+
+    body(class="bg-gray-100 font-sans leading-normal tracking-normal")
+        include components/navbar
+        main(role="main")
+            block content
+        script(src="assets/skills-matrix.js")

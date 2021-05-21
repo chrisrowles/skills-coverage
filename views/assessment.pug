@@ -1,0 +1,11 @@
+extends layout
+
+include mixins/dashboard
+
+block content
+  .container.w-full.mx-auto.pt-20(x-data='manage()' x-init='refreshDashboard')
+    .w-full.px-4.mb-16.text-gray-800.leading-normal(class='md:px-0 md:mt-8')
+      .w-full.p-3
+        include partials/user-skill-form
+  script(src='/assets/skills-matrix.js')
+  +x-data-manage

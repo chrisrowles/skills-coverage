@@ -1,0 +1,7 @@
+.bg-white.border.rounded.shadow.h-full
+  .border-b.p-3
+    h5.uppercase.text-gray-600 Skill Coverage Trend
+  .p-5
+    canvas#team-trend.chartjs
+    script.
+      document.addEventListener("DOMContentLoaded", () => _charts.trend("team-trend", "bar"))
