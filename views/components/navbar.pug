@@ -1,0 +1,48 @@
+nav.bg-white.fixed.w-full.z-10.top-0.shadow
+  .navbar-nav
+    .pl-4(class='w-1/2 md:pl-0')
+      // navbar title
+      a.text-base.no-underline(class='xl:text-xl hover:no-underline' href='#')
+        i.fas.fa-sun.text-yellow-700.pr-2
+        span.hidden(class='md:inline-block') Development Team Skill Coverage Tool
+        span.inline-block(class='md:hidden') Skill Coverage Tool
+    .pr-0(class='w-1/2')
+      // user menu and responsive menu button
+      .flex.relative.inline-block.float-right
+        .relative.text-sm
+          // user name and avatar
+          button#userButton.flex.items-center.mr-3(class='focus:outline-none')
+            img.w-8.h-8.rounded-full.mr-4(src='http://i.pravatar.cc/300' alt='Avatar of User')
+            span.hidden(class='md:inline-block') Chris Rowles
+            include svg/caret
+          #userMenu.dropdown
+            ul.list-reset
+              li
+                a.user-link(href='#') My account
+              li
+                a.user-link(href='#') Notifications
+              li
+                hr.separator
+              li
+                a.user-link(href='#') Logout
+        .block.pr-4(class='lg:hidden')
+          include svg/hamburger
+    // navbar links
+    #nav-content.navbar-content
+      ul.list-reset.flex-1.items-center.px-4(class='lg:flex md:px-0')
+        li.mr-6.my-2(class='md:my-0')
+          a.nav-link(href='/')
+            i.fas.fa-home.fa-fw.mr-3
+            span.pb-1.text-sm(class='md:pb-0') Home
+        li.mr-6.my-2(class='md:my-0')
+          a.nav-link(href='/assessment')
+            i.fas.fa-tasks.fa-fw.mr-3
+            span.pb-1.text-sm(class='md:pb-0') Assessment
+        li.mr-6.my-2(class='md:my-0')
+          a.nav-link(href='#')
+            i.fas.fa-chart-area.fa-fw.mr-3
+            span.pb-1.text-sm(class='md:pb-0') Analytics
+      // search form
+      .relative.pull-right.pl-4.pr-4(class='md:pr-0')
+        input.nav-search(type='search' placeholder='Search')
+        include svg/search

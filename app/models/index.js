@@ -4,16 +4,16 @@ const config = require("../db.config")
 
 // Create a new instance
 const sequelize = new Sequelize(config.name, config.user, config.password, {
-    host: config.host,
-    dialect: config.dialect,
-    operatorsAliases: false,
-    
-    pool: {
-        max: config.pool.max,
-        min: config.pool.min,
-        acquire: config.pool.acquire,
-        idle: config.pool.idle
-    }
+  host: config.host,
+  dialect: config.dialect,
+  operatorsAliases: false,
+  
+  pool: {
+    max: config.pool.max,
+    min: config.pool.min,
+    acquire: config.pool.acquire,
+    idle: config.pool.idle
+  }
 })
 
 const db = {}
